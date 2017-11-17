@@ -1,11 +1,20 @@
 {
-  "name": "pizzaproject",
+  "name": "pizzaorderservice",
   "version": "1.0.0",
-  "description": "",
-  "main": "/v1",
+  "description": "A simple pizza delivery API. Allows to create and modify the menu (i.e. pizzas). You can place orders and query the order status.",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+	"prestart": "npm install",
+	"start": "node index.js"
   },
-  "author": "asad",
-  "license": "ISC"
+  "keywords": [
+    "swagger"
+  ],
+  "license": "Unlicense",
+  "private": true,
+  "dependencies": {
+    "connect": "^3.2.0",
+    "js-yaml": "^3.3.0",
+    "swagger-tools": "0.10.1"
+  }
 }
