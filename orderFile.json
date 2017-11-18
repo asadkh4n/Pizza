@@ -1,0 +1,13 @@
+{"orders":[ 
+    {
+    "id": 0,
+    "orderItems": [
+      {
+        "pizzaId": 0,
+        "quantity": 0
+      }
+    ],
+    "totalPrice": 0,
+    "recipient": "user@example.com"
+    }
+]}

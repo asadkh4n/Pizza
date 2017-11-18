@@ -1,14 +1,24 @@
 'use strict';
+var low	= require('lowdb');
+const db = low('orderFile.json');
+
+//creating a random ID
+function uuid() {
+	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {var r = Math.random()*16|0,v=c=='x'?r:r&0x3|0x8;return v.toString(16);});
+}
 
 exports.createOrder = function(args, res, next) {
   /**
    * Place an order.
-   * 
-   *
-   * body Order order of pizzas
-   * no response value expected for this operation
    **/
-  res.end();
+
+  res.setHeader('Content-Type', 'application/json');
+  res.statusCode = 201;
+
+  var result = db.get('orders')
+  .push({ id: uuid(), orderItems: args.body.value.orderItems, totalPrice: args.body.value.totalPrice, recipient: args.body.value.recipient })
+  .value()
+res.end(JSON.stringify(result));
 }
 
 exports.deleteOrder = function(args, res, next) {
@@ -53,13 +63,17 @@ exports.getOrders = function(args, res, next) {
    *
    * returns List
    **/
-  var examples = {};
-  examples['application/json'] = [ 0 ];
-  if (Object.keys(examples).length > 0) {
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(examples[Object.keys(examples)[0]] || {}, null, 2));
-  } else {
-    res.end();
-  }
+  res.setHeader('Content-Type', 'application/json');
+  res.statusCode = 200;
+  res.end(JSON.stringify(db.get('orders').value()));
+
+  // var examples = {};
+  // examples['application/json'] = [ 0 ];
+  // if (Object.keys(examples).length > 0) {
+  //   res.setHeader('Content-Type', 'application/json');
+  //   res.end(JSON.stringify(examples[Object.keys(examples)[0]] || {}, null, 2));
+  // } else {
+  //   res.end();
+  // }
 }
 

@@ -4,8 +4,8 @@
   "description": "A simple pizza delivery API. Allows to create and modify the menu (i.e. pizzas). You can place orders and query the order status.",
   "main": "index.js",
   "scripts": {
-	"prestart": "npm install",
-	"start": "node index.js"
+    "prestart": "npm install",
+    "start": "node index.js"
   },
   "keywords": [
     "swagger"
@@ -15,6 +15,7 @@
   "dependencies": {
     "connect": "^3.2.0",
     "js-yaml": "^3.3.0",
+    "lowdb": "^0.16.2",
     "swagger-tools": "0.10.1"
   }
 }
