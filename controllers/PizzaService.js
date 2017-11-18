@@ -124,7 +124,6 @@ exports.listToppings = function(args, res, next) {
   /**
    * Get the list of toppings for this pizza.
    * 
-   *
    * pizzaId Long ID of pizza
    * returns List
    **/
