@@ -11,6 +11,24 @@
             "name": "margarita",
             "size": "Standard",
             "price": 3
+            
+        }
+    ],
+    "toppings":[ 
+        {
+            "id": 0,
+            "name": "Onions",
+            "price": 2.00
+        },
+        {
+            "id": 0,
+            "name": "Tomatoes",
+            "price": 2.00
+        },
+        {
+            "id": 1,
+            "name": "Olives",
+            "price": 2.33
         }
     ]
 }

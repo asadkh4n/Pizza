@@ -27,12 +27,17 @@ exports.createTopping = function(args, res, next) {
   /**
    * Creates a new topping.
    * 
-   *
    * pizzaId Long ID of pizza to update
    * body Topping Topping to be added to the pizza
    * no response value expected for this operation
    **/
-  res.end();
+  res.setHeader('Content-Type', 'application/json');
+  res.statusCode = 201;
+
+  var result = db.get('toppings')
+	  .push({ id: args.body.value.id, name: args.body.value.name, price: args.body.value.price})
+	  .value()
+  res.end(JSON.stringify(result));
 }
 
 exports.deletePizza = function(args, res, next) {
@@ -106,18 +111,13 @@ exports.getToppingById = function(args, res, next) {
    * toppingId Long ID of the topping.
    * returns Topping
    **/
-  var examples = {};
-  examples['application/json'] = {
-  "price" : 6.02745618307040320615897144307382404804229736328125,
-  "name" : "Onions",
-  "id" : 0
-};
-  if (Object.keys(examples).length > 0) {
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(examples[Object.keys(examples)[0]] || {}, null, 2));
-  } else {
-    res.end();
-  }
+  if(args.pizzaId.value === '') {
+    res.statusCode = 500;
+    res.end('ID Required');
+ }
+ res.setHeader('Content-Type', 'application/json');
+ res.statusCode = 200;
+ res.end(JSON.stringify(db.get('toppings').find({ id: args.pizzaId.value }).value()));
 }
 
 exports.listToppings = function(args, res, next) {
@@ -128,14 +128,13 @@ exports.listToppings = function(args, res, next) {
    * pizzaId Long ID of pizza
    * returns List
    **/
-  var examples = {};
-  examples['application/json'] = [ 0 ];
-  if (Object.keys(examples).length > 0) {
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(examples[Object.keys(examples)[0]] || {}, null, 2));
-  } else {
-    res.end();
-  }
+  if(args.pizzaId.value === '') {
+    res.statusCode = 500;
+    res.end('ID Required');
+ }
+ res.setHeader('Content-Type', 'application/json');
+ res.statusCode = 200;
+ res.end(JSON.stringify(db.get('toppings').filter({id: args.pizzaId.value}).map((topping) => { return topping.id; }).value()));
 }
 
 exports.updatePizza = function(args, res, next) {
