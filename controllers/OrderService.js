@@ -2,9 +2,9 @@
 var low	= require('lowdb');
 const db = low('orderFile.json');
 
-//creating a random ID
+//creating a random 3 digit number for ID
 function uuid() {
-	return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {var r = Math.random()*16|0,v=c=='x'?r:r&0x3|0x8;return v.toString(16);});
+	return Math.floor(Math.random()*(999-100+1)+100);
 }
 
 exports.createOrder = function(args, res, next) {
@@ -28,7 +28,17 @@ exports.deleteOrder = function(args, res, next) {
    * orderId Long ID of the order to be deleted
    * no response value expected for this operation
    **/
-  res.end();
+  if(args.orderId.value === '') {
+    res.statusCode = 500;
+    res.end('ID Required');
+ }
+ res.setHeader('Content-Type', 'application/json');
+ res.statusCode = 204;
+ db.get('orders')
+   .remove({ id: args.orderId.value })
+   .value()
+   res.end("deleted");
+ res.end();
 }
 
 exports.getOrderById = function(args, res, next) {
@@ -38,22 +48,13 @@ exports.getOrderById = function(args, res, next) {
    * orderId Long ID of order to be returned
    * returns Order
    **/
-  var examples = {};
-  examples['application/json'] = {
-  "totalPrice" : 5.962133916683182377482808078639209270477294921875,
-  "recipient" : "aeiou",
-  "id" : 0,
-  "orderItems" : [ {
-    "quantity" : 1,
-    "pizzaId" : 6
-  } ]
-};
-  if (Object.keys(examples).length > 0) {
-    res.setHeader('Content-Type', 'application/json');
-    res.end(JSON.stringify(examples[Object.keys(examples)[0]] || {}, null, 2));
-  } else {
-    res.end();
-  }
+  if(args.orderId.value === '') {
+    res.statusCode = 500;
+    res.end('ID Required');
+ }
+ res.setHeader('Content-Type', 'application/json');
+ res.statusCode = 200;
+ res.end(JSON.stringify(db.get('orders').find({ id: args.orderId.value }).value()));
 }
 
 exports.getOrders = function(args, res, next) {
@@ -66,14 +67,5 @@ exports.getOrders = function(args, res, next) {
   res.setHeader('Content-Type', 'application/json');
   res.statusCode = 200;
   res.end(JSON.stringify(db.get('orders').value()));
-
-  // var examples = {};
-  // examples['application/json'] = [ 0 ];
-  // if (Object.keys(examples).length > 0) {
-  //   res.setHeader('Content-Type', 'application/json');
-  //   res.end(JSON.stringify(examples[Object.keys(examples)[0]] || {}, null, 2));
-  // } else {
-  //   res.end();
-  // }
 }
 

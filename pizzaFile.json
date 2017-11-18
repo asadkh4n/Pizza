@@ -1,0 +1,16 @@
+{
+    "pizzas": [
+        {
+            "id": 0,
+            "name": "string",
+            "size": "Standard",
+            "price": 0
+        },
+        {
+            "id": 1,
+            "name": "margarita",
+            "size": "Standard",
+            "price": 3
+        }
+    ]
+}
