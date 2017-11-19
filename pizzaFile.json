@@ -4,7 +4,13 @@
             "id": 111,
             "name": "string",
             "size": "Standard",
-            "price": 0
+            "price": 5.0
+        },
+        {
+            "id": 112,
+            "name": "Margarita",
+            "size": "Large",
+            "price": 8.0
         }
         
     ],
@@ -14,6 +20,25 @@
             "name": "Onions",
             "price": 2.00,
             "pizzaId": 111
+        },
+        {
+            "id": 1,
+            "name": "Olives",
+            "price": 6.00,
+            "pizzaId": 111
+        }
+    ],
+    "orders":[ 
+        {
+        "id": 232,
+        "orderItems": [
+          {
+            "pizzaId": 0,
+            "quantity": 1
+          }
+        ],
+        "totalPrice": 0.00,
+        "recipient": "user@example.com"
         }
     ]
 }
