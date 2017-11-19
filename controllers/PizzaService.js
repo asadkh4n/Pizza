@@ -18,7 +18,7 @@ exports.addPizza = function(args, res, next) {
   res.statusCode = 201;
 
   var result = db.get('pizzas')
-	  .push({ id: uuid(), text: args.body.value.name, content: args.body.value.size, role: args.body.value.price })
+	  .push({ id: uuid(), text: args.body.value.name, size: args.body.value.size, price: args.body.value.price })
 	  .value()
   res.end(JSON.stringify(result));
 }
@@ -35,7 +35,7 @@ exports.createTopping = function(args, res, next) {
   res.statusCode = 201;
 
   var result = db.get('toppings')
-	  .push({ id: args.body.value.id, name: args.body.value.name, price: args.body.value.price})
+	  .push({id: uuid(), name: args.body.value.name, price: args.body.value.price, pizzaId: args.pizzaId.value})
 	  .value()
   res.end(JSON.stringify(result));
 }
@@ -70,7 +70,17 @@ exports.deleteToppingById = function(args, res, next) {
    * toppingId Long ID of the topping.
    * no response value expected for this operation
    **/
-  res.end();
+  if(args.toppingId.value === '') {
+    res.statusCode = 500;
+    res.end('ID Required');
+ }
+ res.setHeader('Content-Type', 'application/json');
+ res.statusCode = 204;
+ db.get('toppings')
+   .remove({ id: args.toppingId.value })
+   .value()
+   res.end("deleted");
+ res.end();
 }
 
 exports.getPizzaById = function(args, res, next) {
@@ -117,8 +127,13 @@ exports.getToppingById = function(args, res, next) {
  }
  res.setHeader('Content-Type', 'application/json');
  res.statusCode = 200;
- res.end(JSON.stringify(db.get('toppings').find({ id: args.pizzaId.value }).value()));
+ res.end(JSON.stringify(db.get('toppings')
+ .filter({ id: args.toppingId.value, pizzaId:args.pizzaId.value })
+ .map((topping) => {return _objectWithoutProperties(topping, ['pizzaId'])}).value()[0]));
 }
+
+//this function removes a certain property and returns the remaining object
+function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
 
 exports.listToppings = function(args, res, next) {
   /**
@@ -133,7 +148,7 @@ exports.listToppings = function(args, res, next) {
  }
  res.setHeader('Content-Type', 'application/json');
  res.statusCode = 200;
- res.end(JSON.stringify(db.get('toppings').filter({id: args.pizzaId.value}).map((topping) => { return topping.id; }).value()));
+ res.end(JSON.stringify(db.get('toppings').filter({pizzaId: args.pizzaId.value}).map((topping) => { return topping.id; }).value()));
 }
 
 exports.updatePizza = function(args, res, next) {

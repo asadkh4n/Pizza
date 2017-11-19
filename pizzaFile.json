@@ -1,38 +1,19 @@
 {
     "pizzas": [
         {
-            "id": 0,
+            "id": 111,
             "name": "string",
             "size": "Standard",
             "price": 0
-        },
-        {
-            "id": 1,
-            "name": "margarita",
-            "size": "Standard",
-            "price": 3
         }
+        
     ],
     "toppings":[ 
         {
             "id": 0,
             "name": "Onions",
-            "price": 2.00
-        },
-        {
-            "id": 0,
-            "name": "Tomatoes",
-            "price": 2.00
-        },
-        {
-            "id": 1,
-            "name": "Olives",
-            "price": 2.33
-        },
-        {
-            "id": 1,
-            "name": "corn",
-            "price": 2.33
+            "price": 2.00,
+            "pizzaId": 111
         }
     ]
 }
