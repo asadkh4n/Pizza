@@ -153,7 +153,7 @@ exports.updatePizza = function(args, res, next) {
  res.statusCode = 201;
  var result = db.get('pizzas')
    .find({ id: args.pizzaId.value })
-   .assign({ name: args.body.value.name})
+   .assign({name: args.body.value.name, size: args.body.value.size, price: args.body.value.price})
    .value()
  res.end(JSON.stringify(result));
 }
